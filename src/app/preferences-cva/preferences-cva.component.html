@@ -1,0 +1,73 @@
+<div class="preferences-section">
+  <h3>⚙️ Preferences</h3>
+
+  <form [formGroup]="preferencesForm" class="preferences-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="theme">Theme *</label>
+        <select
+          id="theme"
+          formControlName="theme"
+          (change)="onFieldChange()"
+          [class.error]="hasError('theme')"
+        >
+          <option *ngFor="let theme of themes" [value]="theme.value">
+            {{ theme.label }}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="hasError('theme')">
+          {{ getErrorMessage('theme') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="language">Language *</label>
+        <select
+          id="language"
+          formControlName="language"
+          (change)="onFieldChange()"
+          [class.error]="hasError('language')"
+        >
+          <option *ngFor="let language of languages" [value]="language.value">
+            {{ language.label }}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="hasError('language')">
+          {{ getErrorMessage('language') }}
+        </div>
+      </div>
+    </div>
+
+    <div class="preferences-section-content">
+      <h4>📧 Communication Preferences</h4>
+
+      <div class="checkbox-group">
+        <label
+          class="checkbox-label"
+          *ngFor="let option of communicationOptions"
+        >
+          <input
+            type="checkbox"
+            [formControlName]="option.key"
+            (change)="onFieldChange()"
+          />
+          <span class="checkmark"></span>
+          <div class="checkbox-content">
+            <span class="checkbox-title">{{ option.icon }} {{ option.title }}</span>
+            <small class="checkbox-description">{{ option.description }}</small>
+          </div>
+        </label>
+      </div>
+    </div>
+  </form>
+
+  <!-- Form Status Debug Info -->
+  <div class="cva-debug" *ngIf="preferencesForm.value">
+    <small>
+      <strong>CVA Status:</strong>
+      Valid: {{ isValid ? '✅' : '❌' }} |
+      Touched: {{ isTouched ? '✅' : '❌' }} |
+      Value: {{ preferencesForm.value | json }}
+    </small>
+  </div>
+</div>

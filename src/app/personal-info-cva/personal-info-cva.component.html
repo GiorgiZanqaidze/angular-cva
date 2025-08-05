@@ -1,0 +1,93 @@
+<div class="personal-info-section">
+  <h3>👤 Personal Information</h3>
+
+  <form [formGroup]="personalForm" class="personal-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName">First Name *</label>
+        <input
+          type="text"
+          id="firstName"
+          formControlName="firstName"
+          placeholder="Enter your first name"
+          [class.error]="hasError('firstName')"
+          (blur)="touched()"
+        />
+        <div class="error-message" *ngIf="hasError('firstName')">
+          {{ getErrorMessage('firstName') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name *</label>
+        <input
+          type="text"
+          id="lastName"
+          formControlName="lastName"
+          placeholder="Enter your last name"
+          [class.error]="hasError('lastName')"
+          (blur)="touched()"
+        />
+        <div class="error-message" *ngIf="hasError('lastName')">
+          {{ getErrorMessage('lastName') }}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address *</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Enter your email address"
+        [class.error]="hasError('email')"
+        (blur)="touched()"
+      />
+      <div class="error-message" *ngIf="hasError('email')">
+        {{ getErrorMessage('email') }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input
+          type="tel"
+          id="phone"
+          formControlName="phone"
+          placeholder="+1 (555) 123-4567"
+          [class.error]="hasError('phone')"
+          (blur)="touched()"
+        />
+        <div class="error-message" *ngIf="hasError('phone')">
+          {{ getErrorMessage('phone') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dateOfBirth">Date of Birth *</label>
+        <input
+          type="date"
+          id="dateOfBirth"
+          formControlName="dateOfBirth"
+          [class.error]="hasError('dateOfBirth')"
+          (blur)="touched()"
+        />
+        <div class="error-message" *ngIf="hasError('dateOfBirth')">
+          {{ getErrorMessage('dateOfBirth') }}
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Form Status Debug Info -->
+  <div class="cva-debug" *ngIf="personalForm.value">
+    <small>
+      <strong>CVA Status:</strong>
+      Valid: {{ isValid ? '✅' : '❌' }} |
+      Touched: {{ isTouched ? '✅' : '❌' }} |
+      Value: {{ personalForm.value | json }}
+    </small>
+  </div>
+</div>

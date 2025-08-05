@@ -1,0 +1,124 @@
+<div class="complex-form-container">
+  <h2>🚀 Complex Multi-Tab CVA Form</h2>
+
+  <!-- Tab Navigation -->
+  <div class="tab-navigation">
+    <div
+      *ngFor="let tab of tabs; let i = index"
+      class="tab-header"
+      [class.active]="activeTab === i"
+      [class.valid]="isTabValid(i)"
+      [class.invalid]="!isTabValid(i) && isTabTouched(i)"
+      [class.locked]="!canSwitchToTab(i)"
+      [class.clickable]="canSwitchToTab(i)"
+      (click)="switchTab(i)"
+      [title]="canSwitchToTab(i) ? 'Click to switch to ' + tab.title : 'Complete previous tabs to unlock'"
+    >
+      <span class="tab-icon">{{ tab.icon }}</span>
+      <span class="tab-title">{{ tab.title }}</span>
+      <span class="tab-status" *ngIf="isTabTouched(i)">
+        <span *ngIf="isTabValid(i)" class="valid-badge">✓</span>
+        <span *ngIf="!isTabValid(i)" class="error-badge">{{ getTabErrors(i) }}</span>
+      </span>
+      <span class="lock-icon" *ngIf="!canSwitchToTab(i)">🔒</span>
+    </div>
+  </div>
+
+  <!-- Form Content -->
+  <form [formGroup]="complexForm" (ngSubmit)="onSubmit()" class="complex-form">
+
+    <!-- Tab 1: Personal Information CVA -->
+    <div class="tab-content" *ngIf="activeTab === 0">
+      <app-personal-info-cva
+        formControlName="personalInfo"
+      ></app-personal-info-cva>
+    </div>
+
+    <!-- Tab 2: Address Information CVA -->
+    <div class="tab-content" *ngIf="activeTab === 1">
+      <app-address-info-cva
+        formControlName="addressInfo"
+      ></app-address-info-cva>
+    </div>
+
+    <!-- Tab 3: Preferences CVA -->
+    <div class="tab-content" *ngIf="activeTab === 2">
+      <app-preferences-cva
+        formControlName="preferences"
+      ></app-preferences-cva>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="form-navigation">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="previousTab()"
+        [disabled]="activeTab === 0"
+      >
+        ← Previous
+      </button>
+
+      <div class="tab-indicator">
+        <div>{{ activeTab + 1 }} of {{ tabs.length }}</div>
+        <div class="validation-status" *ngIf="!isCurrentTabValid() && isTabTouched(activeTab)">
+          <small style="color: #dc3545;">❌ Complete current tab to proceed</small>
+        </div>
+        <div class="validation-status" *ngIf="isCurrentTabValid()">
+          <small style="color: #28a745;">✅ Tab completed</small>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="nextTab()"
+        *ngIf="activeTab < tabs.length - 1"
+        [disabled]="!canProceedToNext()"
+        [class.disabled]="!canProceedToNext()"
+        [title]="!canProceedToNext() ? 'Please complete all required fields in the current tab' : 'Proceed to next tab'"
+      >
+        Next →
+      </button>
+
+      <button
+        type="submit"
+        class="btn btn-success"
+        *ngIf="activeTab === tabs.length - 1"
+        [disabled]="!canSubmitForm()"
+        [class.disabled]="!canSubmitForm()"
+        [title]="!canSubmitForm() ? 'Please complete all required fields in all tabs' : 'Submit the complete form'"
+      >
+        🚀 Submit Form
+      </button>
+    </div>
+  </form>
+
+  <!-- Form Debug Info -->
+  <div class="debug-info" *ngIf="complexForm.value">
+    <h4>🔍 Advanced CVA Debug Info</h4>
+    <div class="debug-grid">
+      <div><strong>Overall Valid:</strong> {{ complexForm.valid ? '✅' : '❌' }}</div>
+      <div><strong>Current Tab:</strong> {{ tabs[activeTab].title }}</div>
+      <div><strong>Current Tab Valid:</strong> {{ isCurrentTabValid() ? '✅' : '❌' }}</div>
+      <div><strong>Can Proceed:</strong> {{ canProceedToNext() ? '✅' : '🔒' }}</div>
+      <div><strong>Can Submit:</strong> {{ canSubmitForm() ? '✅' : '🔒' }}</div>
+      <div><strong>Touched:</strong> {{ complexForm.touched ? '✅' : '❌' }}</div>
+    </div>
+
+    <!-- Per-tab validation status -->
+    <div class="tab-validation-status" style="margin-top: 1rem;">
+      <h5>📊 Per-Tab Validation Status:</h5>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem;">
+        <div *ngFor="let tab of tabs; let i = index"
+             [style.background]="isTabValid(i) ? '#d4edda' : '#f8d7da'"
+             [style.color]="isTabValid(i) ? '#155724' : '#721c24'"
+             style="padding: 0.5rem; border-radius: 4px; text-align: center; font-size: 0.8rem;">
+          <strong>{{ tab.icon }} {{ tab.title }}</strong><br>
+          {{ isTabValid(i) ? '✅ Valid' : '❌ Invalid' }}
+          <span *ngIf="getTabErrors(i) > 0"> ({{ getTabErrors(i) }} errors)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
