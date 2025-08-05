@@ -21,6 +21,10 @@ export interface PreferencesData {
   marketingEmails: boolean;
 }
 
+export type PreferencesDataFn = (value: PreferencesData) => void;
+
+export type PreferencesDataTouchedFn = () => void;
+
 @Component({
   selector: 'app-preferences-cva',
   standalone: true,
@@ -112,12 +116,12 @@ export class PreferencesCvaComponent implements ControlValueAccessor, Validator,
     }
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: PreferencesDataFn): void {
     console.log('🔗 Preferences CVA - registerOnChange called');
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: PreferencesDataTouchedFn): void {
     console.log('👆 Preferences CVA - registerOnTouched called');
     this.onTouched = fn;
   }

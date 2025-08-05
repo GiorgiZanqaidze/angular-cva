@@ -22,6 +22,10 @@ interface ComplexFormData {
   preferences: PreferencesData;
 }
 
+export type ComplexFormDataFn = (value: ComplexFormData) => void;
+
+export type ComplexFormDataTouchedFn = () => void;
+
 @Component({
   selector: 'app-multi-tab-form-cva',
   standalone: true,
@@ -84,12 +88,12 @@ export class MultiTabFormCvaComponent implements ControlValueAccessor, Validator
     }
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: ComplexFormDataFn): void {
     console.log('🔗 Complex CVA - registerOnChange called');
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: ComplexFormDataTouchedFn): void {
     console.log('👆 Complex CVA - registerOnTouched called');
     this.onTouched = fn;
   }

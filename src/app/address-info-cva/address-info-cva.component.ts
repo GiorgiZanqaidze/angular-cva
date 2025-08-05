@@ -21,6 +21,10 @@ export interface AddressInfoData {
   postalCode: string;
 }
 
+export type AddressInfoDataFn = (value: AddressInfoData) => void;
+
+export type AddressInfoDataTouchedFn = () => void;
+
 @Component({
   selector: 'app-address-info-cva',
   standalone: true,
@@ -92,12 +96,12 @@ export class AddressInfoCvaComponent implements ControlValueAccessor, Validator,
     }
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: AddressInfoDataFn): void {
     console.log('🔗 Address Info CVA - registerOnChange called');
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: AddressInfoDataTouchedFn): void {
     console.log('👆 Address Info CVA - registerOnTouched called');
     this.onTouched = fn;
   }

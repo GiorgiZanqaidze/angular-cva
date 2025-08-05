@@ -21,6 +21,10 @@ export interface PersonalInfoData {
   dateOfBirth: string;
 }
 
+export type PersonalInfoDataFn = (value: PersonalInfoData) => void;
+
+export type PersonalInfoDataTouchedFn = () => void;
+
 @Component({
   selector: 'app-personal-info-cva',
   standalone: true,
@@ -81,12 +85,12 @@ export class PersonalInfoCvaComponent implements ControlValueAccessor, Validator
     }
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: PersonalInfoDataFn): void {
     console.log('🔗 Personal Info CVA - registerOnChange called');
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: PersonalInfoDataTouchedFn): void {
     console.log('👆 Personal Info CVA - registerOnTouched called');
     this.onTouched = fn;
   }
